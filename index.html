@@ -324,6 +324,16 @@
   /* Mörka bakgrunder oförändrade */
   .booking{background:#4D586C}
   footer{background:#2B2F2C}
+
+  /* Namn + ort ovanför rubriken */
+  .hb-place{display:none}
+  @media (min-width:861px){
+    .hero-brand{display:inline-block;font-family:'DM Sans',system-ui,sans-serif;font-size:1.15rem;font-weight:600;color:#faf7f2;letter-spacing:.01em;margin:0 0 18px;padding-bottom:12px;border-bottom:1px solid rgba(250,247,242,.25)}
+    .hb-place{display:inline;font-weight:500}
+  }
+
+  /* Dölj ikonerna på tjänstekorten */
+  .service-icon{display:none}
 </style>
 </head>
 <body>
@@ -336,7 +346,7 @@
     </a>
     <ul class="nav-links" id="navLinks">
       <li><a href="#tjanster" data-i18n="nav_services">Tjänster</a></li>
-            <li><a href="#produkter" data-i18n="nav_products">Produkter</a></li>
+            <li hidden><a href="#produkter" data-i18n="nav_products">Produkter</a></li>
       <li><a href="#om-oss" data-i18n="nav_about">Om oss</a></li>
       <li><a href="#omdomen" data-i18n="nav_reviews">Omdömen</a></li>
       <li><a href="#kontakt" data-i18n="nav_contact">Kontakt</a></li>
@@ -362,7 +372,7 @@
   <section class="hero" id="hem">
     <div class="container hero-grid">
       <div>
-        <div class="hero-brand">Lyaan Medicinsk Fotvård</div>
+        <p class="hero-brand">Lyaan Medicinsk Fotvård<span class="hb-place"> · Igelboda, Saltsjöbaden</span></p>
         <span class="eyebrow" data-i18n="hero_eyebrow">Medicinsk fotvård i Igelboda, Saltsjöbaden</span>
         <h1 data-i18n-html="hero_title">Omsorg för dina fötter – <em>och hela dig</em></h1>
         <p class="lead" data-i18n="hero_lead">Professionell medicinsk fotvård och avslappnande massage i en lugn och trygg miljö. Boka din tid online på några minuter.</p>
@@ -473,7 +483,8 @@
   </section>
 
   <!-- PRODUCTS -->
-  <section id="produkter">
+  <!-- Produkter är tillfälligt dolda: ta bort "hidden" för att visa dem igen -->
+  <section id="produkter" hidden>
     <div class="container">
       <div class="section-head">
         <span class="eyebrow" data-i18n="products_eyebrow">Butik</span>
