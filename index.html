@@ -40,7 +40,7 @@
   img{max-width:100%;display:block}
   a{color:inherit}
   h1,h2,h3{font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;line-height:1.15;color:var(--ink)}
-  .container{width:100%;max-width:1160px;margin:0 auto;padding:0 20px}
+  .container{width:100%;max-width:1440px;margin:0 auto;padding:0 clamp(20px,3vw,40px)}
   section{padding:88px 0}
   .eyebrow{display:inline-block;font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;color:var(--sage);font-weight:600;margin-bottom:12px}
   .section-head{max-width:640px;margin-bottom:48px}
@@ -67,9 +67,19 @@
   .nav-links a{text-decoration:none;font-size:.95rem;font-weight:500;color:var(--ink)}
   .nav-links a:hover{color:var(--sage)}
   .nav-right{display:flex;align-items:center;gap:12px}
-  .lang-switch{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--white)}
-  .lang-switch button{border:0;background:transparent;padding:7px 12px;font-family:inherit;font-weight:600;font-size:.8rem;cursor:pointer;color:var(--muted)}
-  .lang-switch button.active{background:var(--sage);color:var(--white)}
+  @media (min-width:861px){.nav-links{margin-left:auto;margin-right:12px}}
+  /* Språkval: visar valt språk, klick öppnar en liten lista */
+  .lang-dd{position:relative}
+  .lang-current{display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--white);border-radius:999px;padding:7px 12px 7px 14px;font-family:inherit;font-weight:600;font-size:.8rem;cursor:pointer;color:#004d57}
+  .lang-current svg{transition:transform .2s ease}
+  .lang-current[aria-expanded="true"] svg{transform:rotate(180deg)}
+  .lang-menu{position:absolute;right:0;top:calc(100% + 6px);min-width:140px;background:var(--white);border:1px solid var(--line);border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.12);padding:6px;list-style:none;margin:0;z-index:60}
+  .lang-menu[hidden]{display:none}
+  .lang-menu li{width:auto}
+  .lang-menu button{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;text-align:left;padding:9px 12px;border:0;background:none;border-radius:8px;font-family:inherit;font-size:.9rem;cursor:pointer;color:#004d57}
+  .lang-menu button:hover{background:var(--sand)}
+  .lang-menu button.active{font-weight:600}
+  .lang-menu button.active::after{content:"✓";color:#ff6f5e}
   .nav-book{padding:10px 20px}
   .menu-toggle{display:none;background:none;border:0;cursor:pointer;padding:6px}
   .menu-toggle span{display:block;width:24px;height:2px;background:var(--ink);margin:5px 0;transition:.2s}
@@ -263,10 +273,10 @@
   .hero-brand{display:none}
   @media (max-width:860px){
     /* Språkval i menyn */
-    .nav-right .lang-switch{display:none}
+    .nav-right .lang-dd{display:none}
     .nav-lang{display:block;padding:16px 0 4px}
-    .nav-lang .lang-switch{display:inline-flex}
-    .nav-lang .lang-switch button{padding:9px 18px;font-size:.9rem}
+    .nav-lang .lang-current{padding:9px 16px 9px 18px;font-size:.9rem}
+    .nav-lang .lang-menu{left:0;right:auto}
 
     /* Bild överst med text ovanpå */
     .hero{padding:0;background:none}
@@ -356,7 +366,18 @@
   @media (min-width:861px){
     .hero-brand{display:inline-block;font-family:'DM Sans',system-ui,sans-serif;font-size:1.15rem;font-weight:600;color:#faf7f2;letter-spacing:.01em;margin:0 0 18px;padding-bottom:12px;border-bottom:1px solid rgba(250,247,242,.25)}
     .hb-place{display:inline;font-weight:500}
+    .hero .eyebrow{display:none} /* samma info finns redan i raden ovan */
   }
+
+  /* Samarbetspartners */
+  .partners{padding:40px 0;border-bottom:1px solid var(--line);background:var(--white)}
+  .partners .eyebrow{display:block;text-align:center;margin-bottom:22px}
+  .partner-logos{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:22px 48px;list-style:none;margin:0;padding:0}
+  .partner-logos li{display:flex;align-items:center;justify-content:center;height:48px}
+  .partner-logos a{display:flex;align-items:center;text-decoration:none}
+  .partner-logos img{max-height:40px;max-width:170px;width:auto;height:auto;display:block}
+  .partner-name{font-weight:600;font-size:1.05rem;color:#004d57;letter-spacing:.01em}
+  @media (max-width:860px){.partners{padding:32px 0}.partner-logos{gap:18px 30px}.partner-logos li{height:40px}.partner-logos img{max-height:32px;max-width:130px}}
 
   /* Dölj ikonerna på tjänstekorten */
   .service-icon{display:none}
@@ -377,16 +398,22 @@
       <li><a href="#omdomen" data-i18n="nav_reviews">Omdömen</a></li>
       <li><a href="#kontakt" data-i18n="nav_contact">Kontakt</a></li>
       <li class="nav-lang">
-        <div class="lang-switch" role="group" aria-label="Språk / Language">
-          <button type="button" data-lang="sv" class="active">SV</button>
-          <button type="button" data-lang="en">EN</button>
+        <div class="lang-dd">
+          <button type="button" class="lang-current" aria-haspopup="true" aria-expanded="false" aria-label="Språk / Language"><span class="lang-code">SV</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <ul class="lang-menu" hidden>
+            <li><button type="button" data-lang="sv" class="active">Svenska</button></li>
+            <li><button type="button" data-lang="en">English</button></li>
+          </ul>
         </div>
       </li>
     </ul>
     <div class="nav-right">
-      <div class="lang-switch" role="group" aria-label="Språk / Language">
-        <button type="button" data-lang="sv" class="active">SV</button>
-        <button type="button" data-lang="en">EN</button>
+      <div class="lang-dd">
+        <button type="button" class="lang-current" aria-haspopup="true" aria-expanded="false" aria-label="Språk / Language"><span class="lang-code">SV</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <ul class="lang-menu" hidden>
+          <li><button type="button" data-lang="sv" class="active">Svenska</button></li>
+          <li><button type="button" data-lang="en">English</button></li>
+        </ul>
       </div>
       <button class="menu-toggle" id="menuToggle" aria-label="Meny"><span></span><span></span><span></span></button>
     </div>
@@ -418,6 +445,14 @@
                     <span class="pb-card"><img src="epassi-logo.png" alt="Epassi" title="Vi tar emot friskvårdsbidrag via Epassi" width="65" height="96" class="pb-ep"></span>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- SAMARBETSPARTNERS (logotyperna styrs från INSTÄLLNINGAR → partners) -->
+  <section class="partners" aria-labelledby="partnersTitle">
+    <div class="container">
+      <span class="eyebrow" id="partnersTitle" data-i18n="partners_title">Vi samarbetar bl.a. med</span>
+      <ul class="partner-logos" id="partnerLogos"></ul>
     </div>
   </section>
 
@@ -728,7 +763,19 @@
     bokadirekt:   "https://www.bokadirekt.se/places/lyaan-medicinsk-fotvard-igelboda-saltsjobaden-44318",
     presentkort:  "https://www.bokadirekt.se/places/lyaan-medicinsk-fotvard-igelboda-saltsjobaden-44318/giftcard/checkout",
     betyg:        "4,5",   // betyg på Bokadirekt (med komma)
-    antalOmdomen: 140      // antal omdömen på Bokadirekt
+    antalOmdomen: 140,     // antal omdömen på Bokadirekt
+
+    // ----- Samarbetspartners (logotyper under "Vi samarbetar bl.a. med") -----
+    // fil  = bildens filnamn i GitHub (samma mapp som index.html)
+    // visa = true visas, false döljs
+    // Saknas bilden visas namnet som text i stället.
+    partners: [
+      { namn: "Bokadirekt", fil: "bokadirekt-logo.png", lank: "https://www.bokadirekt.se/places/lyaan-medicinsk-fotvard-igelboda-saltsjobaden-44318", visa: true },
+      { namn: "Epassi",     fil: "epassi-logo.png",     lank: "", visa: true },
+      { namn: "Benifex",    fil: "benifex-logo.png",    lank: "", visa: true },
+      { namn: "Benefits",   fil: "benefits-logo.png",   lank: "", visa: true },
+      { namn: "Edenred",    fil: "edenred-logo.png",    lank: "", visa: false }  // sätt true när ni är godkända
+    ]
     // Google-omdömen ändras längre ner: sök efter GOOGLE_STATIC
   };
   /* ===================== SLUT PÅ INSTÄLLNINGAR ========================= */
@@ -748,7 +795,7 @@
     sv: {
       logo_sub:"Medicinsk Fotvård", nav_services:"Tjänster", nav_book:"Boka tid", nav_products:"Produkter", nav_about:"Om oss", nav_reviews:"Omdömen", nav_contact:"Kontakt",
       cta_book:"Se våra tjänster & Boka tid",
-      hero_eyebrow:"Medicinsk fotvård i Igelboda, Saltsjöbaden", hero_title:"Omsorg för dina fötter – <em>och hela dig</em>",
+      partners_title:"Vi samarbetar bl.a. med", hero_eyebrow:"Medicinsk fotvård i Igelboda, Saltsjöbaden", hero_title:"Omsorg för dina fötter – <em>och hela dig</em>",
       hero_lead:"Professionell medicinsk fotvård och avslappnande massage i en lugn och trygg miljö. Boka din tid online på några minuter.",
       badge1_t:"Diplomerad", badge1_d:"medicinsk fotvårdsterapeut", badge2_t:"Friskvård", badge2_d:"Epassi & Benifex", badge3_t:SETTINGS.betyg + " ★", badge3_d:SETTINGS.antalOmdomen + " omdömen på Bokadirekt",
       card_small:"Lediga tider varje vecka", card_big:"Boka via Bokadirekt",
@@ -784,7 +831,7 @@
     en: {
       logo_sub:"Medical Foot Care", nav_services:"Services", nav_book:"Book now", nav_products:"Products", nav_about:"About us", nav_reviews:"Reviews", nav_contact:"Contact",
       cta_book:"View services & Book",
-      hero_eyebrow:"Medical foot care in Igelboda, Saltsjöbaden", hero_title:"Care for your feet – <em>and all of you</em>",
+      partners_title:"We work with, among others", hero_eyebrow:"Medical foot care in Igelboda, Saltsjöbaden", hero_title:"Care for your feet – <em>and all of you</em>",
       hero_lead:"Professional medical foot care and relaxing massage in a calm, safe setting. Book your appointment online in just a few minutes.",
       badge1_t:"Qualified", badge1_d:"medical foot care therapist", badge2_t:"Wellness allowance", badge2_d:"Epassi & Benifex", badge3_t:SETTINGS.betyg.replace(",", ".") + " ★", badge3_d:SETTINGS.antalOmdomen + " reviews on Bokadirekt",
       card_small:"Available times every week", card_big:"Book via Bokadirekt",
@@ -829,7 +876,8 @@
     document.querySelectorAll("[data-i18n]").forEach(el => { const k = el.dataset.i18n; if (d[k] !== undefined) el.textContent = d[k]; });
     document.querySelectorAll("[data-i18n-html]").forEach(el => { const k = el.dataset.i18nHtml; if (d[k] !== undefined) el.innerHTML = d[k]; });
     document.querySelectorAll("[data-i18n-ph]").forEach(el => { const k = el.dataset.i18nPh; if (d[k] !== undefined) el.placeholder = d[k]; });
-    document.querySelectorAll(".lang-switch button").forEach(b => b.classList.toggle("active", b.dataset.lang === l));
+    document.querySelectorAll(".lang-menu button").forEach(b => b.classList.toggle("active", b.dataset.lang === l));
+    document.querySelectorAll(".lang-code").forEach(c => { c.textContent = l.toUpperCase(); });
     // Öppettider från INSTÄLLNINGAR
     const hl = document.getElementById("hoursList");
     if (hl) {
@@ -846,7 +894,24 @@
     try { localStorage.setItem("lyaan-lang", l); } catch(e) {}
   }
 
-  document.querySelectorAll(".lang-switch button").forEach(b => b.addEventListener("click", () => applyLang(b.dataset.lang)));
+  // Språkval – öppna/stäng listan
+  const closeLang = () => document.querySelectorAll(".lang-dd").forEach(dd => {
+    dd.querySelector(".lang-menu").hidden = true;
+    dd.querySelector(".lang-current").setAttribute("aria-expanded", "false");
+  });
+  document.querySelectorAll(".lang-dd").forEach(dd => {
+    const btn = dd.querySelector(".lang-current"), menu = dd.querySelector(".lang-menu");
+    btn.addEventListener("click", e => {
+      e.stopPropagation();
+      const open = menu.hidden;
+      closeLang();
+      menu.hidden = !open;
+      btn.setAttribute("aria-expanded", String(open));
+    });
+    menu.querySelectorAll("button").forEach(b => b.addEventListener("click", e => { e.stopPropagation(); applyLang(b.dataset.lang); closeLang(); }));
+  });
+  document.addEventListener("click", closeLang);
+  document.addEventListener("keydown", e => { if (e.key === "Escape") closeLang(); });
 
   // Mobile menu
   const navLinks = document.getElementById("navLinks");
@@ -868,6 +933,17 @@
   setHref("bokadirekt", SETTINGS.bokadirekt);
   setHref("presentkort", SETTINGS.presentkort);
   setText("betyg", SETTINGS.betyg);
+  // Partnerlogotyper
+  const pl = document.getElementById("partnerLogos");
+  if (pl) SETTINGS.partners.filter(x => x.visa).forEach(x => {
+    const li = document.createElement("li");
+    const wrap = x.lank ? Object.assign(document.createElement("a"), { href: x.lank, target: "_blank", rel: "noopener", title: x.namn }) : li;
+    const img = Object.assign(document.createElement("img"), { src: x.fil, alt: x.namn, loading: "lazy" });
+    img.onerror = () => { const t = document.createElement("span"); t.className = "partner-name"; t.textContent = x.namn; img.replaceWith(t); };
+    wrap.appendChild(img);
+    if (wrap !== li) li.appendChild(wrap);
+    pl.appendChild(li);
+  });
   setText("antal", SETTINGS.antalOmdomen);
 
   // Bokadirekt links
